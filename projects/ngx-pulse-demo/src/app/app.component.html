@@ -1,0 +1,22 @@
+<div style="padding: 40px; font-family: system-ui, sans-serif; max-width: 400px;">
+  <h2 style="color: #18181b; margin-bottom: 4px;">ngx-pulse testbench</h2>
+  <p style="color: #71717a; font-size: 14px; margin-bottom: 24px;">Testing our standalone library components locally</p>
+
+  <div style="background: #f4f4f5; padding: 20px; border-radius: 12px;">
+    <!-- Two-way binding directly to our custom model signal property -->
+    <ngx-pulse-toggle 
+      [(checked)]="isNotificationsEnabled" 
+      label="Enable Push Notifications">
+    </ngx-pulse-toggle>
+    
+    <hr style="border: 0; border-top: 1px solid #e4e4e7; margin: 16px 0;">
+    
+    <!-- Watch the state change live below -->
+    <p style="font-size: 13px; margin: 0; color: #52525b;">
+      Current State: 
+      <strong [style.color]="isNotificationsEnabled() ? '#10b981' : '#ef4444'">
+        {{ isNotificationsEnabled() ? 'ACTIVE' : 'MUTED' }}
+      </strong>
+    </p>
+  </div>
+</div>
