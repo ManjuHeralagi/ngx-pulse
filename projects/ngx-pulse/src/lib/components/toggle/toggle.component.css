@@ -1,3 +1,22 @@
+/* ============================================================
+   CSS Custom Properties — consumers can override these on the
+   <ngx-pulse-toggle> host element to theme the toggle.
+   ============================================================ */
+:host {
+  --toggle-width: 48px;
+  --toggle-height: 24px;
+  --toggle-bg-off: #ccc;
+  --toggle-bg-on: #4CAF50;
+  --toggle-knob-size: 20px;
+  --toggle-knob-color: #fff;
+  --toggle-border-radius: 24px;
+  --toggle-transition-duration: 0.3s;
+  --toggle-label-size: 14px;
+  --toggle-label-color: #333;
+  --toggle-disabled-opacity: 0.5;
+  --toggle-focus-color: var(--toggle-bg-on);
+}
+
 .toggle-container {
   display: inline-flex;
   align-items: center;
@@ -7,7 +26,7 @@
 }
 
 .disabled-opacity {
-  opacity: 0.5;
+  opacity: var(--toggle-disabled-opacity);
   cursor: not-allowed;
 }
 
@@ -20,34 +39,40 @@
 
 .toggle-slider {
   position: relative;
-  width: 48px;
-  height: 24px;
-  background-color: #ccc;
-  border-radius: 24px;
-  transition: background-color 0.3s;
+  width: var(--toggle-width);
+  height: var(--toggle-height);
+  background-color: var(--toggle-bg-off);
+  border-radius: var(--toggle-border-radius);
+  transition: background-color var(--toggle-transition-duration);
 }
 
 .toggle-slider::before {
   content: '';
   position: absolute;
-  width: 20px;
-  height: 20px;
-  left: 2px;
-  top: 2px;
-  background-color: white;
+  width: var(--toggle-knob-size);
+  height: var(--toggle-knob-size);
+  left: calc((var(--toggle-height) - var(--toggle-knob-size)) / 2);
+  top: calc((var(--toggle-height) - var(--toggle-knob-size)) / 2);
+  background-color: var(--toggle-knob-color);
   border-radius: 50%;
-  transition: transform 0.3s;
+  transition: transform var(--toggle-transition-duration);
 }
 
 .toggle-input:checked + .toggle-slider {
-  background-color: #4CAF50;
+  background-color: var(--toggle-bg-on);
 }
 
 .toggle-input:checked + .toggle-slider::before {
-  transform: translateX(24px);
+  transform: translateX(calc(var(--toggle-width) - var(--toggle-knob-size) - (var(--toggle-height) - var(--toggle-knob-size))));
+}
+
+/* Keyboard focus indicator — visible only when navigating via keyboard (WCAG 2.4.7) */
+.toggle-input:focus-visible + .toggle-slider {
+  outline: 2px solid var(--toggle-focus-color);
+  outline-offset: 2px;
 }
 
 .toggle-label {
-  font-size: 14px;
-  color: #333;
+  font-size: var(--toggle-label-size);
+  color: var(--toggle-label-color);
 }

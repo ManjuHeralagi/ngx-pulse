@@ -1,22 +1,168 @@
-<div style="padding: 40px; font-family: system-ui, sans-serif; max-width: 400px;">
-  <h2 style="color: #18181b; margin-bottom: 4px;">ngx-pulse testbench</h2>
-  <p style="color: #71717a; font-size: 14px; margin-bottom: 24px;">Testing our standalone library components locally</p>
+<div class="demo-page">
+  <header class="demo-header">
+    <h1>ngx-pulse testbench</h1>
+    <p class="subtitle">Testing our standalone library components locally</p>
+  </header>
 
-  <div style="background: #f4f4f5; padding: 20px; border-radius: 12px;">
-    <!-- Two-way binding directly to our custom model signal property -->
-    <ngx-pulse-toggle 
-      [(checked)]="isNotificationsEnabled" 
-      label="Enable Push Notifications">
-    </ngx-pulse-toggle>
-    
-    <hr style="border: 0; border-top: 1px solid #e4e4e7; margin: 16px 0;">
-    
-    <!-- Watch the state change live below -->
-    <p style="font-size: 13px; margin: 0; color: #52525b;">
-      Current State: 
-      <strong [style.color]="isNotificationsEnabled() ? '#10b981' : '#ef4444'">
-        {{ isNotificationsEnabled() ? 'ACTIVE' : 'MUTED' }}
-      </strong>
-    </p>
-  </div>
+  <!-- ============================================================ -->
+  <!-- SECTION 1 — Basic Usage (existing demo) -->
+  <!-- ============================================================ -->
+  <section class="demo-section">
+    <h2 class="section-title">Basic Usage</h2>
+    <p class="section-desc">Two-way binding with <code>[(checked)]</code> and a visible label.</p>
+
+    <div class="demo-card">
+      <ngx-pulse-toggle 
+        [(checked)]="isNotificationsEnabled" 
+        label="Enable Push Notifications">
+      </ngx-pulse-toggle>
+      
+      <hr class="divider">
+      
+      <p class="state-display">
+        Current State: 
+        <strong [style.color]="isNotificationsEnabled() ? '#10b981' : '#ef4444'">
+          {{ isNotificationsEnabled() ? 'ACTIVE' : 'MUTED' }}
+        </strong>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 2 — Accessibility Features -->
+  <!-- ============================================================ -->
+  <section class="demo-section">
+    <h2 class="section-title">♿ Accessibility</h2>
+    <p class="section-desc">Demonstrates ARIA attributes, keyboard navigation, and screen reader support.</p>
+
+    <!-- ariaLabel — standalone screen reader label (no visible label) -->
+    <div class="demo-card">
+      <div class="demo-row">
+        <span class="demo-badge">ariaLabel</span>
+        <span class="demo-hint">No visible label — screen readers use <code>aria-label</code></span>
+      </div>
+      <ngx-pulse-toggle 
+        [(checked)]="isDarkMode"
+        id="dark-mode-toggle"
+        ariaLabel="Toggle dark mode">
+      </ngx-pulse-toggle>
+      <p class="state-display">
+        Dark Mode: 
+        <strong [style.color]="isDarkMode() ? '#10b981' : '#ef4444'">
+          {{ isDarkMode() ? 'ON' : 'OFF' }}
+        </strong>
+      </p>
+    </div>
+
+    <!-- ariaLabelledby — references an external heading -->
+    <div class="demo-card">
+      <div class="demo-row">
+        <span class="demo-badge">ariaLabelledby</span>
+        <span class="demo-hint">Toggle is labelled by the heading above it</span>
+      </div>
+      <h3 id="autosave-heading" class="external-label">Auto-Save Preferences</h3>
+      <ngx-pulse-toggle 
+        [(checked)]="isAutoSave"
+        ariaLabelledby="autosave-heading">
+      </ngx-pulse-toggle>
+      <p class="state-display">
+        Auto-Save: 
+        <strong [style.color]="isAutoSave() ? '#10b981' : '#ef4444'">
+          {{ isAutoSave() ? 'ENABLED' : 'DISABLED' }}
+        </strong>
+      </p>
+    </div>
+
+    <!-- ariaDescribedby — supplementary help text -->
+    <div class="demo-card">
+      <div class="demo-row">
+        <span class="demo-badge">ariaDescribedby</span>
+        <span class="demo-hint">Screen reader announces the help text below</span>
+      </div>
+      <ngx-pulse-toggle 
+        [(checked)]="isLocationTracking"
+        label="Location Tracking"
+        ariaDescribedby="location-help">
+      </ngx-pulse-toggle>
+      <p id="location-help" class="help-text">
+        Shares your real-time location with emergency contacts when enabled.
+      </p>
+      <p class="state-display">
+        Tracking: 
+        <strong [style.color]="isLocationTracking() ? '#10b981' : '#ef4444'">
+          {{ isLocationTracking() ? 'ACTIVE' : 'OFF' }}
+        </strong>
+      </p>
+    </div>
+
+    <!-- Disabled state with tabIndex -->
+    <div class="demo-card">
+      <div class="demo-row">
+        <span class="demo-badge">disabled + tabIndex</span>
+        <span class="demo-hint">Removed from tab order, visually muted</span>
+      </div>
+      <ngx-pulse-toggle 
+        [(checked)]="isNotificationsEnabled"
+        [disabled]="true"
+        label="Locked Toggle (disabled)">
+      </ngx-pulse-toggle>
+    </div>
+
+    <!-- Keyboard instructions -->
+    <div class="demo-card keyboard-card">
+      <h3 class="keyboard-title">⌨️ Keyboard Navigation</h3>
+      <ul class="keyboard-list">
+        <li><kbd>Tab</kbd> / <kbd>Shift+Tab</kbd> — Move focus between toggles</li>
+        <li><kbd>Space</kbd> — Toggle the checked state</li>
+        <li>A <strong>green focus ring</strong> appears when navigating via keyboard</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 3 — CSS Custom Properties Theming -->
+  <!-- ============================================================ -->
+  <section class="demo-section">
+    <h2 class="section-title">🎨 CSS Theming</h2>
+    <p class="section-desc">Override CSS custom properties to create different visual styles.</p>
+
+    <!-- Blue theme -->
+    <div class="demo-card">
+      <div class="demo-row">
+        <span class="demo-badge blue">Blue Theme</span>
+        <code class="code-snippet">--toggle-bg-on: #2196F3</code>
+      </div>
+      <ngx-pulse-toggle 
+        class="blue-theme"
+        [(checked)]="isBlueToggle"
+        label="Wi-Fi Connection">
+      </ngx-pulse-toggle>
+    </div>
+
+    <!-- Purple theme, larger -->
+    <div class="demo-card">
+      <div class="demo-row">
+        <span class="demo-badge purple">Purple Large</span>
+        <code class="code-snippet">--toggle-width: 60px; --toggle-height: 30px</code>
+      </div>
+      <ngx-pulse-toggle 
+        class="purple-large-theme"
+        [(checked)]="isPurpleToggle"
+        label="Airplane Mode">
+      </ngx-pulse-toggle>
+    </div>
+
+    <!-- Compact / small theme -->
+    <div class="demo-card">
+      <div class="demo-row">
+        <span class="demo-badge compact">Compact</span>
+        <code class="code-snippet">--toggle-width: 36px; --toggle-height: 18px</code>
+      </div>
+      <ngx-pulse-toggle 
+        class="compact-theme"
+        [(checked)]="isCompactToggle"
+        label="Compact inline toggle">
+      </ngx-pulse-toggle>
+    </div>
+  </section>
 </div>

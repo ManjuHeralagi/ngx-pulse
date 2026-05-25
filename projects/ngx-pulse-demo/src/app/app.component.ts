@@ -13,4 +13,14 @@ export class AppComponent {
   
   // Track the toggle state using a local signal
   isNotificationsEnabled = signal<boolean>(true);
+
+  // Accessibility demo states
+  isDarkMode = signal<boolean>(false);
+  isAutoSave = signal<boolean>(true);
+  isLocationTracking = signal<boolean>(false);
+
+  // CSS theming demo states
+  isBlueToggle = signal<boolean>(true);
+  isPurpleToggle = signal<boolean>(false);
+  isCompactToggle = signal<boolean>(true);
 }
