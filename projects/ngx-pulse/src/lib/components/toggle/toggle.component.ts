@@ -1,6 +1,9 @@
 import { Component, forwardRef, model, effect, input, signal } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
+// Auto-incrementing unique ID counter
+let nextUniqueId = 0;
+
 @Component({
   selector: 'ngx-pulse-toggle',
   standalone: true,
@@ -20,7 +23,7 @@ export class ToggleComponent implements ControlValueAccessor {
   // 1. The Core Value State (Using the standard model() input)
   // This automatically provides support for standard property binding: [(checked)]="myVar"
   checked = model<boolean>(false);
-  
+
   // Expose as 'value' for compatibility with signal-based forms when they use it
   readonly value = this.checked;
 
@@ -29,9 +32,18 @@ export class ToggleComponent implements ControlValueAccessor {
   disabled = model<boolean>(false);
   touched = signal<boolean>(false);
 
+  // 3. Accessibility inputs — allows consumers to wire up proper ARIA semantics
+  // Uses a deterministic auto-incrementing counter
+  id = input<string>(`ngx-pulse-toggle-${++nextUniqueId}`);
+  name = input<string>('');
+  ariaLabel = input<string>('');
+  ariaLabelledby = input<string>('');
+  ariaDescribedby = input<string>('');
+  tabIndex = input<number>(0);
+
   // Placeholders to hold classic forms callback functions
-  private onChange = (val: boolean) => {};
-  private onTouched = () => {};
+  private onChange = (val: boolean) => { };
+  private onTouched = () => { };
 
   constructor() {
     // Whenever our checked signal changes (either by UI click or code modification),
@@ -44,12 +56,14 @@ export class ToggleComponent implements ControlValueAccessor {
   // Handles UI interaction cleanly
   onToggle(): void {
     if (this.disabled()) return;
-    
+
     this.checked.update(current => !current);
     this.markAsTouched();
   }
 
-  private markAsTouched(): void {
+  // Called from the template on (blur) to mark the control as touched for form validation.
+  // Must NOT be private — Angular templates cannot access private members.
+  markAsTouched(): void {
     if (!this.touched()) {
       this.touched.set(true);
       this.onTouched();
